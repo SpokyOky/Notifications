@@ -2,17 +2,22 @@ package com.example.notifications.Notification;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.notifications.MainActivity;
+import com.example.notifications.R;
 
 import java.util.concurrent.TimeUnit;
 
 public class NotificationIntentService extends IntentService {
-    private static final int NOTIFICATION_ID = 213;
+    private static int NOTIFICATION_ID = 0;
 
     private final String TAG = "NotifIntentServiceLog";
     public NotificationIntentService(){
@@ -26,26 +31,26 @@ public class NotificationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-       /* int time = intent.getIntExtra("time", 0);
-        String label = intent.getStringExtra("task");
-        Log.d(TAG, "onHandleIntent start: " + label);
-        try{
-            TimeUnit.SECONDS.sleep(time);
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        Log.d(TAG, "onHandleIntent end: " + label);*/
+        Intent notificationIntent = new Intent(this, NotificationActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle("My Title");
-        builder.setContentText("This is the Body");
-     //   builder.setSmallIcon(R.drawable.whatever);
-        Intent notifyIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //to be able to launch your activity from the notification
-        builder.setContentIntent(pendingIntent);
-        Notification notificationCompat = builder.build();
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify(NOTIFICATION_ID, notificationCompat);
+        Resources res = this.getResources();
+        long when = System.currentTimeMillis();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        builder.setContentIntent(contentIntent)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_text))
+                //  .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_launcher_background))
+                .setTicker(getString(R.string.notification_ticker))
+                .setWhen(when)
+                .setShowWhen(true);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID++, builder.build());
     }
 }
