@@ -3,4 +3,5 @@
     <string name="notification_title">Title</string>
     <string name="notification_text">Text</string>
     <string name="notification_ticker">Ticker</string>
+
 </resources>
