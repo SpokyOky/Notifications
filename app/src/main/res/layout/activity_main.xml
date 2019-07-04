@@ -16,20 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickStart"
-            android:text="Start" />
+            android:text="@string/btnStart" />
 
         <Button
             android:id="@+id/btnStop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickStop"
-            android:text="Stop" />
+            android:text="@string/btnStop" />
 
-        <Button
-            android:id="@+id/btnSetStrings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickSetStrings"
-            android:text="Set Strings" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

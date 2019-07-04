@@ -6,13 +6,14 @@ import android.view.View;
 
 import com.example.notifications.R;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivityBase extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
     }
+
 
 
     public void onClickYes(View view) {

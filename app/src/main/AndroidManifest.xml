@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Notification.NotificationActivity"></activity>
+        <activity android:name=".Notification.NotificationActivity_2"></activity>
+        <activity android:name=".Notification.NotificationActivity_1" />
+        <activity android:name=".Notification.NotificationActivityBase" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +26,11 @@
         <receiver
             android:name=".Notification.NotificationReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
 
         <service
             android:name=".Notification.NotificationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
 </manifest>
