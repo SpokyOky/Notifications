@@ -10,7 +10,7 @@ public class NotificationActivity_1 extends NotificationActivityBase {
         super.onCreate(savedInstanceState);
     }
 
-    NotificationModule notificationModule = new NotificationModule(100, 0, this.getClass(), 0);
+    NotificationModule notificationModule;
 
     boolean doOnce = true;
 
@@ -18,16 +18,16 @@ public class NotificationActivity_1 extends NotificationActivityBase {
     public void onClickYes(View view) {
         super.onClickYes(view);
         if (doOnce) {
+            notificationModule = new NotificationModule(100,
+                    0, this.getClass(), NotificationIntentServiceExample.class, 0);
             notificationModule.startNotify(this);
             doOnce = false;
         }
-
     }
+
     @Override
     public void onClickNo(View view) {
         super.onClickNo(view);
         notificationModule.stopNotify(this);
     }
-
-
 }

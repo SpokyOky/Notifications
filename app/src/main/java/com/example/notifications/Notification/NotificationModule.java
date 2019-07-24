@@ -2,6 +2,7 @@ package com.example.notifications.Notification;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,19 +16,24 @@ public class NotificationModule {
     private long endMillis = -1;
     private long repeatAfterMillis = -1;
     private Class<? extends Activity> notificationActivity;
-    private int REQUEST_CODE = 0;
+    private Class<? extends IntentService> notificationIntentService;
+    private int REQUEST_CODE;
 
     //to stop
     public NotificationModule(Context context, int REQUEST_CODE){
         this.REQUEST_CODE = REQUEST_CODE;
         stopNotify(context);
     }
+
     public NotificationModule(long beginMillis, long repeatIntervalMillis,
-                              Class<? extends Activity> notificationActivity, int REQUEST_CODE){
+                              Class<? extends Activity> notificationActivity,
+                              Class<? extends IntentService> notificationIntentService,
+                              int REQUEST_CODE){
         this.beginMillis = beginMillis;
         this.repeatIntervalMillis = repeatIntervalMillis;
         this.repeating = true;
         this.notificationActivity = notificationActivity;
+        this.notificationIntentService = notificationIntentService;
         this.REQUEST_CODE = REQUEST_CODE;
         if (this.repeatIntervalMillis <= 0) {
             this.repeatIntervalMillis = -1;
@@ -36,11 +42,14 @@ public class NotificationModule {
     }
 
     public NotificationModule(long beginMillis, double repeatIntervalSeconds,
-                              Class<? extends Activity> notificationActivity, int REQUEST_CODE){
+                              Class<? extends Activity> notificationActivity,
+                              Class<? extends IntentService> notificationIntentService,
+                              int REQUEST_CODE){
         this.beginMillis = beginMillis;
         this.repeatIntervalMillis = (long) Math.floor(repeatIntervalSeconds * 1000);
         this.repeating = true;
         this.notificationActivity = notificationActivity;
+        this.notificationIntentService = notificationIntentService;
         this.REQUEST_CODE = REQUEST_CODE;
         if (this.repeatIntervalMillis <= 0){
             this.repeatIntervalMillis = -1;
@@ -50,11 +59,14 @@ public class NotificationModule {
     }
 
     public NotificationModule(Date beginDate, Date repeatIntervalDate,
-                              Class<? extends Activity> notificationActivity, int REQUEST_CODE){
+                              Class<? extends Activity> notificationActivity,
+                              Class<? extends IntentService> notificationIntentService,
+                              int REQUEST_CODE){
         this.repeating = true;
         this.beginMillis = beginDate.getTime();
         this.repeatIntervalMillis = repeatIntervalDate.getTime();
         this.notificationActivity = notificationActivity;
+        this.notificationIntentService = notificationIntentService;
         this.REQUEST_CODE = REQUEST_CODE;
         if (this.repeatIntervalMillis <= 0){
             this.repeatIntervalMillis = -1;
@@ -63,12 +75,15 @@ public class NotificationModule {
     }
 
     public NotificationModule(Date beginDate, Date repeatIntervalDate, Date endDate,
-                              Class<? extends Activity> notificationActivity, int REQUEST_CODE){
+                              Class<? extends Activity> notificationActivity,
+                              Class<? extends IntentService> notificationIntentService,
+                              int REQUEST_CODE){
         this.repeating = true;
         this.repeatIntervalMillis = repeatIntervalDate.getTime();
         this.beginMillis = beginDate.getTime();
         this.endMillis = endDate.getTime();
         this.notificationActivity = notificationActivity;
+        this.notificationIntentService = notificationIntentService;
         this.REQUEST_CODE = REQUEST_CODE;
         if (this.repeatIntervalMillis <= 0){
             this.repeatIntervalMillis = -1;
@@ -77,13 +92,16 @@ public class NotificationModule {
     }
 
     public NotificationModule(Date beginDate, Date repeatIntervalDate, Date endDate, Date repeatAfterDate,
-                              Class<? extends Activity> notificationActivity, int REQUEST_CODE){
+                              Class<? extends Activity> notificationActivity,
+                              Class<? extends IntentService> notificationIntentService,
+                              int REQUEST_CODE){
         this.repeating = true;
         this.repeatIntervalMillis = repeatIntervalDate.getTime();
         this.beginMillis = beginDate.getTime();
         this.endMillis = endDate.getTime();
         this.repeatAfterMillis = repeatAfterDate.getTime();
         this.notificationActivity = notificationActivity;
+        this.notificationIntentService = notificationIntentService;
         this.REQUEST_CODE = REQUEST_CODE;
         if (this.repeatIntervalMillis <= 0){
             this.repeatIntervalMillis = -1;
@@ -93,9 +111,10 @@ public class NotificationModule {
 
     public void startNotify(Context context){
         Intent notificationIntent = new Intent(context, NotificationReceiver.class);
-        notificationIntent.putExtra("NOTIFICATION_ACTIVITY", notificationActivity);
-        notificationIntent.putExtra("END_MILLIS", endMillis);
-        notificationIntent.putExtra("REQUEST_CODE", REQUEST_CODE);
+        notificationIntent.putExtra("NOTIFICATION_ACTIVITY", notificationActivity)
+            .putExtra("NOTIFICATION_INTENT_SERVICE", notificationIntentService)
+            .putExtra("END_MILLIS", endMillis)
+            .putExtra("REQUEST_CODE", REQUEST_CODE);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast
                 (context, REQUEST_CODE, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

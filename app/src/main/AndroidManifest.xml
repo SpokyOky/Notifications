@@ -29,7 +29,10 @@
             android:exported="false" />
 
         <service
-            android:name=".Notification.NotificationIntentService"
+            android:name=".Notification.NotificationIntentServiceExample"
+            android:exported="false" />
+        <service
+            android:name=".Notification.NotificationIntentService_1"
             android:exported="false" />
     </application>
 
